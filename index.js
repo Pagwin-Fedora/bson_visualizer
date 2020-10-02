@@ -1,6 +1,6 @@
 const bson = require('bson');
 const fs = require('fs');
-let file = "default.bson";
+let file = process.stdin;
 let base64 = false;
 let outfile = process.stdout;
 let flag = "";
@@ -12,14 +12,14 @@ for(let arg of process.argv){
 		flag = arg[1];	
 	}
 	else if(flag === "o"){
-		outfile = arg;
+		outfile = fs.openSync(arg, "w+");
 		flag === "";
 	}
 	else{
-		file = arg[0];
+		file = fs.openSync(arg[0], "r");
 	}
 }
-fs.readFile(file,(err,data)=>{
+fs.read(file,(err,data)=>{
 	if(err) console.error(err);
 	let intermediate = data;
 	console.log(data);
